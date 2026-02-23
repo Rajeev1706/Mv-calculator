@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Team League – Market Value Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #020617;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 5px;
+    }
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 60px;
+      padding: 4px;
+      border-radius: 4px;
+      border: none;
+      text-align: center;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #22c55e;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .result {
+      background: #020617;
+      border: 1px solid #334155;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .result div {
+      margin-bottom: 6px;
+    }
+
+    .mv {
+      font-size: 24px;
+      font-weight: bold;
+      color: #22c55e;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🏆 Market Value Calculator</h1>
+  <div class="container">
+
+    <div class="grid">
+
+      <div>
+        <h3>Wins</h3>
+        <label>A+ Wins <input id="w_ap" type="number" min="0" value="0"></label>
+        <label>A Wins <input id="w_a" type="number" min="0" value="0"></label>
+        <label>B Wins <input id="w_b" type="number" min="0" value="0"></label>
+        <label>C Wins <input id="w_c" type="number" min="0" value="0"></label>
+      </div>
+
+      <div>
+        <h3>Draws</h3>
+        <label>A+ Draws <input id="d_ap" type="number" min="0" value="0"></label>
+        <label>A Draws <input id="d_a" type="number" min="0" value="0"></label>
+        <label>B Draws <input id="d_b" type="number" min="0" value="0"></label>
+        <label>C Draws <input id="d_c" type="number" min="0" value="0"></label>
+      </div>
+
+    </div>
+
+    <button onclick="calculateMV()">Calculate Market Value</button>
+
+    <div class="result">
+      <div id="ew">Effective Wins: 0</div>
+      <div id="pp">Performance Points: 0</div>
+      <div id="wp">Win %: 0</div>
+      <div class="mv" id="mv">MV: 0</div>
+    </div>
+
+  </div>
+
+  <script>
+    function calculateMV() {
+      const w_ap = +document.getElementById("w_ap").value;
+      const w_a  = +document.getElementById("w_a").value;
+      const w_b  = +document.getElementById("w_b").value;
+      const w_c  = +document.getElementById("w_c").value;
+
+      const d_ap = +document.getElementById("d_ap").value;
+      const d_a  = +document.getElementById("d_a").value;
+      const d_b  = +document.getElementById("d_b").value;
+      const d_c  = +document.getElementById("d_c").value;
+
+      const EW =
+        (w_ap * 1.5) +
+        (w_a  * 1.0) +
+        (w_b  * 0.8) +
+        (w_c  * 0.6) +
+        (d_ap * 0.75) +
+        (d_a  * 0.5) +
+        (d_b  * 0.4) +
+        (d_c  * 0.3);
+
+      const cappedEW = Math.min(EW, 14);
+      const PP = cappedEW * 3;
+      const winPercent = cappedEW / 14;
+
+      const MV_raw = (PP * 5) + (winPercent * 85);
+
+      const finalMV = Math.round(MV_raw / 5) * 5;
+
+      document.getElementById("ew").innerText = "Effective Wins: " + cappedEW.toFixed(2);
+      document.getElementById("pp").innerText = "Performance Points: " + PP.toFixed(2);
+      document.getElementById("wp").innerText = "Win %: " + (winPercent * 100).toFixed(1) + "%";
+      document.getElementById("mv").innerText = "MV: " + finalMV;
+    }
+  </script>
+
+</body>
+</html>
