@@ -104,6 +104,7 @@
 
       <div>
         <h3>Wins</h3>
+        <label>S Wins <input id="w_s" type="number" min="0" value="0"></label>
         <label>A+ Wins <input id="w_ap" type="number" min="0" value="0"></label>
         <label>A Wins <input id="w_a" type="number" min="0" value="0"></label>
         <label>B Wins <input id="w_b" type="number" min="0" value="0"></label>
@@ -112,6 +113,7 @@
 
       <div>
         <h3>Draws</h3>
+        <label>S Draws <input id="d_s" type="number" min="0" value="0"></label>
         <label>A+ Draws <input id="d_ap" type="number" min="0" value="0"></label>
         <label>A Draws <input id="d_a" type="number" min="0" value="0"></label>
         <label>B Draws <input id="d_b" type="number" min="0" value="0"></label>
@@ -133,39 +135,46 @@
 
   <script>
     function calculateMV() {
-      const w_ap = +document.getElementById("w_ap").value;
-      const w_a  = +document.getElementById("w_a").value;
-      const w_b  = +document.getElementById("w_b").value;
-      const w_c  = +document.getElementById("w_c").value;
+  const w_s  = +document.getElementById("w_s").value;
+  const w_ap = +document.getElementById("w_ap").value;
+  const w_a  = +document.getElementById("w_a").value;
+  const w_b  = +document.getElementById("w_b").value;
+  const w_c  = +document.getElementById("w_c").value;
 
-      const d_ap = +document.getElementById("d_ap").value;
-      const d_a  = +document.getElementById("d_a").value;
-      const d_b  = +document.getElementById("d_b").value;
-      const d_c  = +document.getElementById("d_c").value;
+  const d_s  = +document.getElementById("d_s").value;
+  const d_ap = +document.getElementById("d_ap").value;
+  const d_a  = +document.getElementById("d_a").value;
+  const d_b  = +document.getElementById("d_b").value;
+  const d_c  = +document.getElementById("d_c").value;
 
-      const EW =
-        (w_ap * 1.5) +
-        (w_a  * 1.0) +
-        (w_b  * 0.8) +
-        (w_c  * 0.6) +
-        (d_ap * 0.75) +
-        (d_a  * 0.5) +
-        (d_b  * 0.4) +
-        (d_c  * 0.3);
+  const EW =
+    (w_s  * 1.5) +
+    (w_ap * 1.2) +
+    (w_a  * 0.9) +
+    (w_b  * 0.7) +
+    (w_c  * 0.6) +
+    (d_s  * 0.75) +
+    (d_ap * 0.6) +
+    (d_a  * 0.45) +
+    (d_b  * 0.35) +
+    (d_c  * 0.3);
 
-      const cappedEW = Math.min(EW, 14);
-      const PP = cappedEW * 3;
-      const winPercent = cappedEW / 14;
+  const cappedEW = Math.min(EW, 14);
+  const PP = cappedEW * 3;
+  const winPercent = cappedEW / 14;
 
-      const MV_raw = (PP * 5) + (winPercent * 85);
+  const MV_raw = (PP * 5) + (winPercent * 85);
+  const finalMV = Math.round(MV_raw / 5) * 5;
 
-      const finalMV = Math.round(MV_raw / 5) * 5;
-
-      document.getElementById("ew").innerText = "Effective Wins: " + cappedEW.toFixed(2);
-      document.getElementById("pp").innerText = "Performance Points: " + PP.toFixed(2);
-      document.getElementById("wp").innerText = "Win %: " + (winPercent * 100).toFixed(1) + "%";
-      document.getElementById("mv").innerText = "MV: " + finalMV;
-    }
+  document.getElementById("ew").innerText =
+    "Effective Wins: " + cappedEW.toFixed(2);
+  document.getElementById("pp").innerText =
+    "Performance Points: " + PP.toFixed(2);
+  document.getElementById("wp").innerText =
+    "Win %: " + (winPercent * 100).toFixed(1) + "%";
+  document.getElementById("mv").innerText =
+    "MV: " + finalMV;
+}
   </script>
 
 </body>
